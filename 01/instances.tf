@@ -19,7 +19,6 @@ resource "aws_instance" "TEST" {
   subnet_id              = "${aws_subnet.test.id}"
   key_name               = "${var.key_pair}"
 
-
   tags = {
     Name = "HelloWorld"
   }

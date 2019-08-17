@@ -4,16 +4,15 @@ provider "aws" {
 }
 resource "aws_vpc" "vpc01" {
   cidr_block = "${var.vpc_cidr_block}"
-
   tags = {
-    Name = "vpc-test"
+    Name = "vpc_test"
   }
 }
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.vpc01.id}"
 
   tags = {
-    Name = "test_gateway"
+    Name = "gateway_test"
   }
 }
 resource "aws_subnet" "test" {
@@ -26,7 +25,7 @@ resource "aws_subnet" "test" {
     Name = "public_subnet_test"
   }
 }
-resource "aws_route_table" "route_table_vpc01" {
+resource "aws_route_table" "rtb_vpc01" {
   vpc_id = "${aws_vpc.vpc01.id}"
 
   route {
@@ -34,10 +33,10 @@ resource "aws_route_table" "route_table_vpc01" {
     gateway_id = "${aws_internet_gateway.gw.id}"
   }
 }
-resource "aws_route_table_association" "a" {
-  subnet_id = "0.0.0.0/0"
-  route_table_id = "${aws_route_table.route_table_vpc01.id}"
-}
+# resource "aws_route_table_association" "a" {
+#   subnet_id = "0.0.0.0/0"
+#   route_table_id = "${aws_route_table.rtb_vpc01.id}"
+# }
 
 resource "aws_security_group" "security_group_01" {
   name        = "allow_ssh"
