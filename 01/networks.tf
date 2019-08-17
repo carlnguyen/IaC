@@ -33,11 +33,10 @@ resource "aws_route_table" "rtb_vpc01" {
     gateway_id = "${aws_internet_gateway.gw.id}"
   }
 }
-# resource "aws_route_table_association" "a" {
-#   subnet_id = "0.0.0.0/0"
-#   route_table_id = "${aws_route_table.rtb_vpc01.id}"
-# }
-
+resource "aws_route_table_association" "a" {
+  subnet_id = "${aws_subnet.test.id}"
+  route_table_id = "${aws_route_table.rtb_vpc01.id}"
+}
 resource "aws_security_group" "security_group_01" {
   name        = "allow_ssh"
   description = "Allow ssh inbound traffic"
