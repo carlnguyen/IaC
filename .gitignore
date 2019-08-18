@@ -4,3 +4,4 @@
 *.out
 *.pem
 *.json
+*.tfvars

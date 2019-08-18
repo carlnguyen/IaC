@@ -5,14 +5,14 @@ provider "aws" {
 resource "aws_vpc" "vpc01" {
   cidr_block = "${var.vpc_cidr_block}"
   tags = {
-    Name = "vpc_test"
+    Name = "VPC-TEST"
   }
 }
 resource "aws_internet_gateway" "gw" {
   vpc_id = "${aws_vpc.vpc01.id}"
 
   tags = {
-    Name = "gateway_test"
+    Name = "GW-TEST"
   }
 }
 resource "aws_subnet" "test" {
@@ -22,14 +22,14 @@ resource "aws_subnet" "test" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "public_subnet_test"
+    Name = "PUBLIC-SUBNET-TEST"
   }
 }
 resource "aws_route_table" "rtb_vpc01" {
   vpc_id = "${aws_vpc.vpc01.id}"
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = "${var.rtb_cidr}"
     gateway_id = "${aws_internet_gateway.gw.id}"
   }
 }
@@ -45,15 +45,15 @@ resource "aws_security_group" "security_group_01" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.ingress_cird}"]
   }
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.egress_cidr}"]
   }
   tags = {
-    Name = "allow_ssh"
+    Name = "ALLOW-SSH"
   }
 }
