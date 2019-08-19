@@ -22,20 +22,33 @@ resource "aws_instance" "Helloworld" {
   tags = {
     Name = "NGINX"
   }
+  # provisioner "local-exec" {
+  #   command = <<EOH
+  #   sudo apt-get update
+  #   sudo apt-get install -y ansible
+  #   EOH
+  # }
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    host        = "${aws_instance.Helloworld.public_ip}"
+    private_key = "${file("${var.PRIVATE_KEY_PATH}")}"
+    agent       = true
+  }
   provisioner "file" {
-    source = "./file/nginx_php.sh"
-    destination = "/tmp/nginx_php.sh"
+    source      = "./file/ansible.sh"
+    destination = "/tmp/ansible.sh"
   }
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/nginx_php.sh",
-      "sudo /tmp/nginx_php.sh"
+      "chmod +x /tmp/ansible.sh",
+      "sudo /tmp/ansible.sh"
     ]
   }
-  connection {
-    host = "${aws_instance.Helloworld.public_ip}"
-    type = "ssh"
-    user = "ubuntu"
-    private_key = "${file("${var.PRIVATE_KEY_PATH}")}"
-  }
+  # connection {
+  #   host = "${aws_instance.Helloworld.public_ip}"
+  #   type = "ssh"
+  #   user = "ubuntu"
+  #   private_key = "${file("${var.PRIVATE_KEY_PATH}")}"
+  # }
 }
