@@ -1,0 +1,5 @@
+---
+# vars file for nginx
+nginx_config: /etc/nginx/nginx.conf
+nginx_config_dir: /etc/nginx/
+nginx_config_file: /etc/nginx/conf.d/

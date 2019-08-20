@@ -1,0 +1,6 @@
+---
+- host: NGINX
+  become: true
+  gather_facts: false
+  roles: 
+    - { role: nginx, tag: nginx }

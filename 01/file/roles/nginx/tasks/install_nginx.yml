@@ -1,0 +1,19 @@
+---
+- name: Define nginx user
+  set_facts:
+    nginx_user: "{{ nginx_user }}"
+  when: nginx_user is not defined
+# install nginx
+- include_tasks: install_nginx.yml
+- name: start nginx service
+  service:
+    name: nginx
+    state: "{{ nginx_service_state }}"
+    enabled: "{{ nginx_service_enabled }}"
+# - name: Add PPA for nginx
+#   apt_repository:
+#     repo: 'ppa:nginx/{{ nginx_ppa_version }}'
+#     state: present
+#     update_cache: true
+#   register: nginx_ppa_added
+#   when: nginx_ppa_use | bool
