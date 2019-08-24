@@ -1,7 +1,7 @@
 ---
-- host: NGINX
+- hosts: NGINX
   become: true
   gather_facts: false
   roles: 
-    - nginx
-    - php7.3
+    - {role: 'nginx', tags: 'nginx'}
+    - {role: 'php', tags: 'php'}

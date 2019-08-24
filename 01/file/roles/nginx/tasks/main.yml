@@ -3,7 +3,9 @@
   set_fact:
     nginx_user: "{{ nginx_user }}"
   when: nginx_user is not defined
-
+- name: set hostname
+  hostname:
+    name: "{{ hostname }}"
 - name: update package control
   apt:
     update-cache: yes
