@@ -1,1 +1,16 @@
-language: ruby
+addons:
+  apt:
+    packages:
+      - git
+      - make
+      - curl
+
+install:
+  - make init
+
+script:
+  - make terraform/install
+  - make terraform/get-plugins
+  - make terraform/get-modules
+  - make terraform/lint
+  - make terraform/validate

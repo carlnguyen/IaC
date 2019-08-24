@@ -23,15 +23,15 @@ resource "aws_instance" "Helloworld" {
     Name = "NGINX"
   }
   provisioner "local-exec" {
-    command = "IP=${aws_instance.Helloworld.public_ip} | sed -i 's/$IP/IP/g' ./file/host.yml"
+    command = "echo ${aws_instance.Helloworld.public_ip} > public_ip.txt"
   }
   provisioner "local-exec" {
-    command = "ansible-playbook -u ubuntu -i ${aws_instance.Helloworld.public_ip} --private-key ${var.PRIVATE_KEY_PATH} provision.yml"
+    command = "ansible-playbook -u ubuntu -i ${aws_instance.Helloworld.public_ip} --private-key ${var.PRIVATE_KEY_PATH} file/provision.yml"
   }
-  /*connection {
+  connection {
     host = "${aws_instance.Helloworld.public_ip}"
     type = "ssh"
     user = "ubuntu"
     private_key = "${file("${var.PRIVATE_KEY_PATH}")}"
-  }*/
+  }
 }

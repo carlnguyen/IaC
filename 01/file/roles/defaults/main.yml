@@ -1,0 +1,5 @@
+---
+# defaults file nginx
+nginx_ppa_version: stable
+nginx_serive_state: started
+nginx_service_enabled: true
