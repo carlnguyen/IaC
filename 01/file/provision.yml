@@ -3,4 +3,5 @@
   become: true
   gather_facts: false
   roles: 
-    - { role: nginx, tag: nginx }
+    - nginx
+    - php7.3

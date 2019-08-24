@@ -2,6 +2,8 @@
 - name: define nginx user
   set_fact:
     nginx_user: "{{ nginx_user }}"
+  when: nginx_user is not defined
+
 - name: update package control
   apt:
     update-cache: yes
@@ -9,8 +11,8 @@
   apt:
     name: nginx
     state: latest
-- name: start nginx
-  service: 
+- name: start nginx service
+  service:
     name: nginx
     state: started
-- name: install php
+    enabled: true
