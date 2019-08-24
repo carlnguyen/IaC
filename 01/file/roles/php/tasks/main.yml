@@ -1,0 +1,22 @@
+---
+# tasks file for php
+- name: install software-properties-common
+  apt:
+    name: software-properties-common
+
+- name: add repo
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+
+- name: update cachce
+  apt:
+    update-cache: yes
+
+- name: upgrade packages
+  apt:
+    upgrade: safe
+- name: install php
+  apt:
+    name: "{{ php_version }}"
+    state: present

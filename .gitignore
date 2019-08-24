@@ -6,3 +6,4 @@
 *.json
 *.tfvars
 *.log
+test/
