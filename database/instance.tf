@@ -12,7 +12,7 @@ data "aws_ami" "ubuntu" {
   }
   owners = ["099720109477"] # Canonical
 }
-resource "aws_instance" "Helloworld" {
+resource "aws_instance" "Myworld" {
   ami                    = "${data.aws_ami.ubuntu.id}"
   instance_type          = "${var.instance_type}"
   vpc_security_group_ids = ["${aws_security_group.security_group_01.id}"]
@@ -23,15 +23,6 @@ resource "aws_instance" "Helloworld" {
     Name = "NGINX"
   }
   provisioner "local-exec" {
-    command = "echo ${aws_instance.Helloworld.public_ip} > public_ip.txt"
-  }
-  provisioner "local-exec" {
-    command = "ansible-playbook -i ${aws_instance.Helloworld.public_ip} --private-key ${var.PRIVATE_KEY_PATH} file/provision.yml"
-  }
-  connection {
-    host = "${aws_instance.Helloworld.public_ip}"
-    type = "ssh"
-    user = "ubuntu"
-    private_key = "${file("${var.PRIVATE_KEY_PATH}")}"
+      
   }
 }
