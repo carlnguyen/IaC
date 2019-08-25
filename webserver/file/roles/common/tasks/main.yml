@@ -1,0 +1,10 @@
+---
+# tasks file for common
+# install common tools
+- name: common tools
+  apt:
+    name: "{{ item }}"
+    update-cache: yes
+  loop:
+    - build-essential
+    - net-tools

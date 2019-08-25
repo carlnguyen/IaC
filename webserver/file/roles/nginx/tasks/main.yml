@@ -6,9 +6,6 @@
 - name: set hostname
   hostname:
     name: "{{ hostname }}"
-- name: update package control
-  apt:
-    update-cache: yes
 - name: install nginx
   apt:
     name: nginx
@@ -18,3 +15,11 @@
     name: nginx
     state: started
     enabled: true
+# allow nginx throught fw
+- name: allow firewall
+  ufw: 
+    rule: allow
+    name: nginx
+- name: reload nginx
+  ufw:
+    state: reloaded
