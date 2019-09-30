@@ -22,7 +22,15 @@ resource "aws_instance" "Helloworld" {
   tags = {
     Name = "NGINX"
   }
-  provisioner "local-exec" {
-    command = "ansible-playbook -i ${aws_instance.Helloworld.public_ip}, --private-key ${var.PRIVATE_KEY_PATH} file/provision.yml"
+  provisioner "file" {
+    source      = "file"
+    destination = "/tmp"
+
+    connection {
+      type        = "ssh"
+      host        = "${aws_instance.Helloworld.public_ip}"
+      user        = "ubuntu"
+      private_key = "${file(var.PRIVATE_KEY_PATH)}"
+    }
   }
 }
