@@ -1,3 +1,23 @@
+locals {
+  key_pair      = "carlnguyen"
+  instance_type = "t2.micro"
+  PRIVATE_KEY_PATH = "/Users/cuongnguyen/Desktop/Study/aws-credentials/carlnguyen.pem"
+}
+provider "aws" {
+  # version = "~> 2.0"
+  region  = "ap-southeast-1"
+}
+data "aws_subnet" "test" {
+  tags = {
+    Name = "PUBLIC-SUBNET-TEST"
+  }
+}
+# data "aws_vpc" "vpc01" {
+#   tags = {
+#     Name = "VPC-TEST"
+#   }
+# }
+data "aws_security_groups" "security_group_01" {}
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -14,10 +34,10 @@ data "aws_ami" "ubuntu" {
 }
 resource "aws_instance" "Helloworld" {
   ami                    = "${data.aws_ami.ubuntu.id}"
-  instance_type          = "${var.instance_type}"
-  vpc_security_group_ids = ["${aws_security_group.security_group_01.id}"]
-  subnet_id              = "${aws_subnet.test.id}"
-  key_name               = "${var.key_pair}"
+  instance_type          = "${local.instance_type}"
+  vpc_security_group_ids = ["${data.aws_security_groups.security_group_01.id}"]
+  subnet_id              = "${data.aws_subnet.test.id}"
+  key_name               = "${local.key_pair}"
 
   tags = {
     Name = "NGINX"
@@ -30,7 +50,19 @@ resource "aws_instance" "Helloworld" {
       type        = "ssh"
       host        = "${aws_instance.Helloworld.public_ip}"
       user        = "ubuntu"
-      private_key = "${file(var.PRIVATE_KEY_PATH)}"
+      private_key = "${file(local.PRIVATE_KEY_PATH)}"
+    }
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/file/*",
+      "sudo /tmp/file/installation_scripts/install_ansible.sh"
+    ]
+    connection {
+      type        = "ssh"
+      host        = "${aws_instance.Helloworld.public_ip}"
+      user        = "ubuntu"
+      private_key = "${file(local.PRIVATE_KEY_PATH)}"
     }
   }
 }
