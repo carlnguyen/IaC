@@ -12,11 +12,11 @@ data "aws_subnet" "test" {
     Name = "PUBLIC-SUBNET-TEST"
   }
 }
-# data "aws_vpc" "vpc01" {
-#   tags = {
-#     Name = "VPC-TEST"
-#   }
-# }
+data "aws_vpc" "vpc01" {
+  tags = {
+    Name = "VPC-TEST"
+  }
+}
 data "aws_security_groups" "security_group_01" {}
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -35,7 +35,8 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "Helloworld" {
   ami                    = "${data.aws_ami.ubuntu.id}"
   instance_type          = "${local.instance_type}"
-  vpc_security_group_ids = ["${data.aws_security_groups.security_group_01.id}"]
+  # vpc_security_group_ids = ["${data.aws_security_groups.security_group_01.id}"]
+  vpc_security_group_ids = ["${data.aws_vpc.vpc01.id}"]
   subnet_id              = "${data.aws_subnet.test.id}"
   key_name               = "${local.key_pair}"
 
